@@ -4,7 +4,11 @@ import _ from "lodash";
 
 import PostModel from "../model/post.js";
 import validate from "../middleware/joiValidation.js";
-import { createPostSchema, updatePostSchema } from "../validation/post.js";
+import {
+  createPostSchema,
+  updatePostSchema,
+  verifyPasswordSchema,
+} from "../validation/post.js";
 
 const router = express.Router();
 
@@ -24,10 +28,16 @@ router.get("/", async (req, res) => {
 
     const posts = await PostModel.find(filter).sort("-createdAt");
 
-    return res.status(200).send(posts);
+    return res.status(200).json({
+      success: true,
+      data: posts,
+    });
   } catch (err) {
     console.log(err);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
   }
 });
 
@@ -37,13 +47,31 @@ router.get("/:id", async (req, res) => {
   try {
     const id = req.params.id;
 
-    const post = await PostModel.findById(id);
-    if (!post) return res.status(404).send("Post not found");
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid post ID",
+      });
+    }
 
-    return res.status(200).send(post);
+    const post = await PostModel.findById(id);
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post not found",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      data: post,
+    });
   } catch (err) {
     console.log(err);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
   }
 });
 
@@ -54,7 +82,10 @@ router.get("/search", async (req, res) => {
     const { q, type, city, area, category, status = "active" } = req.query;
 
     if (!q || q.trim().length < 2) {
-      return res.status(400).send("Search query must be at least 2 characters");
+      return res.status(400).json({
+        success: false,
+        message: "Search query must be at least 2 characters",
+      });
     }
 
     // Build search filter
@@ -73,16 +104,64 @@ router.get("/search", async (req, res) => {
     if (area) filter.area = area;
     if (category) filter.category = category;
 
-    const posts = await PostModel.find(filter).sort("-createdAt").limit(50); // Limit results for performance
+    const posts = await PostModel.find(filter).sort("-createdAt").limit(50);
 
-    return res.status(200).send(posts);
+    return res.status(200).json({
+      success: true,
+      count: posts.length,
+      data: posts,
+    });
   } catch (err) {
     console.log(err);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
   }
 });
 
 // verify password
+
+router.post("/verify/:id", validate(verifyPasswordSchema), async (req, res) => {
+  try {
+    const { password } = req.body;
+    const { id } = req.params;
+
+    if (!id || !mongoose.Types.ObjectId.isValid(id)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid post ID",
+      });
+    }
+
+    const post = await PostModel.findById(id).select("+password");
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post not found",
+      });
+    }
+
+    const doesPassMatch = await post.comparePassword(password);
+    if (!doesPassMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Incorrect password",
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: "Password verified",
+    });
+  } catch (err) {
+    console.log(err);
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+});
 
 // create post
 
@@ -91,18 +170,23 @@ router.post("/", validate(createPostSchema), async (req, res) => {
     const data = req.body;
 
     const newPost = new PostModel(data);
-    if (!newPost) return res.status(400).send("Failed to create post");
-
     newPost.password = await newPost.hashPassword(data.password);
 
-    newPost.save();
+    await newPost.save();
 
     const response = _.omit(newPost.toObject(), ["password", "imagePublicId"]);
 
-    return res.status(201).send(response);
+    return res.status(201).json({
+      success: true,
+      message: "Post created successfully",
+      data: response,
+    });
   } catch (err) {
     console.log(err);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
   }
 });
 
@@ -110,47 +194,109 @@ router.post("/", validate(createPostSchema), async (req, res) => {
 
 router.put("/:id", validate(updatePostSchema), async (req, res) => {
   try {
-    const id = req.params.id;
-    const data = req.body;
+    const { id } = req.params;
+    const { password, ...updateData } = req.body;
 
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).send("Invalid post ID");
+      return res.status(400).json({
+        success: false,
+        message: "Invalid post ID",
+      });
     }
 
-    const updatedPost = await PostModel.findByIdAndUpdate(id, data, {
+    // Find post with password to verify
+    const post = await PostModel.findById(id).select("+password");
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post not found",
+      });
+    }
+
+    // Verify password
+    const doesPassMatch = await post.comparePassword(password);
+    if (!doesPassMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Incorrect password",
+      });
+    }
+
+    const updatedPost = await PostModel.findByIdAndUpdate(id, updateData, {
       runValidators: true,
       new: true,
     });
-    if (!updatedPost) return res.status(400).send("Failed to update post");
 
-    const response = _.omit(newPost.toObject(), ["password", "imagePublicId"]);
+    const response = _.omit(updatedPost.toObject(), [
+      "password",
+      "imagePublicId",
+    ]);
 
-    return res.status(201).send(response);
+    return res.status(200).json({
+      success: true,
+      message: "Post updated successfully",
+      data: response,
+    });
   } catch (err) {
     console.log(err);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
   }
 });
 
 // delete post
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", validate(verifyPasswordSchema), async (req, res) => {
   try {
-    const id = req.params.id;
+    const { id } = req.params;
+    const { password } = req.body;
 
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
-      return res.status(400).send("Invalid post ID");
+      return res.status(400).json({
+        success: false,
+        message: "Invalid post ID",
+      });
     }
 
+    // Find post with password to verify
+    const post = await PostModel.findById(id).select("+password");
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: "Post not found",
+      });
+    }
+
+    // Verify password
+    const doesPassMatch = await post.comparePassword(password);
+    if (!doesPassMatch) {
+      return res.status(401).json({
+        success: false,
+        message: "Incorrect password",
+      });
+    }
+
+    // Delete post
     const deletedPost = await PostModel.findByIdAndDelete(id);
-    if (!deletedPost) return res.status(400).send("Failed to update post");
 
-    const response = _.omit(newPost.toObject(), ["password", "imagePublicId"]);
+    const response = _.omit(deletedPost.toObject(), [
+      "password",
+      "imagePublicId",
+    ]);
 
-    return res.status(201).send(response);
+    return res.status(200).json({
+      success: true,
+      message: "Post deleted successfully",
+      data: response,
+    });
   } catch (err) {
     console.log(err);
-    return res.status(500).send("Server Error");
+    return res.status(500).json({
+      success: false,
+      message: "Server Error",
+    });
   }
 });
 
