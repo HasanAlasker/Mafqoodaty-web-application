@@ -1,5 +1,5 @@
-// models/Post.js
 import mongoose from "mongoose";
+import bcrypt from 'bcrypt'
 
 const postSchema = new mongoose.Schema(
   {
@@ -14,6 +14,12 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
       trim: true,
+    },
+    password: {
+      type: String,
+      required: true,
+      minlength: 4,
+      select: false, // Don't include in queries by default
     },
     image: {
       type: String,
@@ -79,6 +85,15 @@ const postSchema = new mongoose.Schema(
 
 // Index for common queries
 postSchema.index({ type: 1, city: 1, status: 1, createdAt: -1 });
+
+postSchema.methods.hashPassword = async function (password) {
+  const salt = await bcrypt.genSalt(10)
+  return await bcrypt.hash(password, salt)
+};
+
+postSchema.methods.comparePassword = async function (password) {
+  return await bcrypt.compare(password, this.password)
+}
 
 const PostModel = mongoose.model("Post", postSchema);
 export default PostModel;

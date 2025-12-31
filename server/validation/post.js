@@ -24,6 +24,12 @@ export const createPostSchema = Joi.object({
     "string.max": "Item name cannot exceed 100 characters",
   }),
 
+  password: Joi.string().min(4).max(50).required().messages({
+    "string.empty": "Password is required",
+    "string.min": "Password must be at least 4 characters",
+    "string.max": "Password cannot exceed 50 characters",
+  }),
+
   description: Joi.string().max(500).trim().required().messages({
     "string.empty": "Description is required",
     "string.max": "Description cannot exceed 500 characters",
@@ -63,6 +69,10 @@ export const createPostSchema = Joi.object({
 });
 
 export const updatePostSchema = Joi.object({
+  password: Joi.string().min(4).max(50).required().messages({
+    "string.empty": "Password is required to update post",
+  }),
+
   userName: Joi.string().min(2).max(25).trim(),
   userPhone: Joi.string()
     .pattern(/^[0-9+\-\s()]+$/)
@@ -86,4 +96,16 @@ export const updatePostSchema = Joi.object({
   ),
   type: Joi.string().valid("found", "lost"),
   status: Joi.string().valid("active", "resolved"),
-}).min(1); // At least one field must be updated
+}).min(2); // At least one field must be updated
+
+export const deletePostSchema = Joi.object({
+  password: Joi.string().min(4).max(50).required().messages({
+    "string.empty": "Password is required to delete post",
+  }),
+});
+
+export const verifyPasswordSchema = Joi.object({
+  password: Joi.string().min(4).max(50).required().messages({
+    "string.empty": "Password is required",
+  }),
+});

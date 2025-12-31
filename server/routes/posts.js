@@ -1,5 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
+import _ from "lodash";
 
 import PostModel from "../model/post.js";
 import validate from "../middleware/joiValidation.js";
@@ -81,6 +82,8 @@ router.get("/search", async (req, res) => {
   }
 });
 
+// verify password
+
 // create post
 
 router.post("/", validate(createPostSchema), async (req, res) => {
@@ -90,9 +93,13 @@ router.post("/", validate(createPostSchema), async (req, res) => {
     const newPost = new PostModel(data);
     if (!newPost) return res.status(400).send("Failed to create post");
 
+    newPost.password = await newPost.hashPassword(data.password);
+
     newPost.save();
 
-    return res.status(201).send(newPost);
+    const response = _.omit(newPost.toObject(), ["password", "imagePublicId"]);
+
+    return res.status(201).send(response);
   } catch (err) {
     console.log(err);
     return res.status(500).send("Server Error");
@@ -116,7 +123,9 @@ router.put("/:id", validate(updatePostSchema), async (req, res) => {
     });
     if (!updatedPost) return res.status(400).send("Failed to update post");
 
-    return res.status(201).send(updatedPost);
+    const response = _.omit(newPost.toObject(), ["password", "imagePublicId"]);
+
+    return res.status(201).send(response);
   } catch (err) {
     console.log(err);
     return res.status(500).send("Server Error");
@@ -136,7 +145,9 @@ router.delete("/:id", async (req, res) => {
     const deletedPost = await PostModel.findByIdAndDelete(id);
     if (!deletedPost) return res.status(400).send("Failed to update post");
 
-    return res.status(201).send(deletedPost);
+    const response = _.omit(newPost.toObject(), ["password", "imagePublicId"]);
+
+    return res.status(201).send(response);
   } catch (err) {
     console.log(err);
     return res.status(500).send("Server Error");
