@@ -1,15 +1,15 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: cairo;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: cairo;
 }
 :root {
-  --background: #EBEBEB;
+  --background: #ebebeb;
   --white: #ffffff;
   --black: #000000;
-  --gray: #8F8F8F;
-  --green: #0BD064;
+  --gray: #8f8f8f;
+  --green: #0bd064;
 }
 html {
   scroll-behavior: smooth;
@@ -20,17 +20,25 @@ body {
 a {
   color: var(--black);
   text-decoration: none;
-  font-size: clamp(1rem, 1.2vw, 1.4rem);
+  font-size: clamp(1rem, 1.4vw, 1.4rem);
   transition: all 0.3s ease;
 }
 .active {
   color: var(--green);
   font-weight: bold;
 }
+.screen {
+  width: 90%;
+  margin: 0 auto;
+}
 
 /* -------------------------------------- N A V B A R ----------------------------------------- */
 
 nav {
+  position: sticky;
+  top: 0;
+  right: 0;
+  left: 0;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -39,38 +47,33 @@ nav {
   background-color: rgba(237, 237, 237, 0.7);
   backdrop-filter: blur(15px) saturate(180%);
   -webkit-backdrop-filter: blur(15px) saturate(180%);
-  z-index: 1000;
-  position: fixed;
-  top: 0;
-  right: 0;
-  left: 0;
 }
 .nav-cont {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 90%;
   background-color: transparent;
   padding-top: 1rem;
+  width: 100%;
 }
 .links {
   gap: 3rem;
   display: none;
 }
 .logo {
-    background: var(--green);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    border-radius: 50%;
-    width: 2rem;
-    height: 2rem;
-    position: relative;
+  background: var(--green);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+  position: relative;
 }
-.logo>img{
-    width: 80%;
-    position: absolute;
-    left: 1px;
+.logo > img {
+  width: 80%;
+  position: absolute;
+  left: 1px;
 }
 .menu {
   color: var(--white);
@@ -96,7 +99,6 @@ nav {
 /* -------------------------------------- M E D I A   Q U E R E I S ----------------------------------------- */
 
 @media (min-width: 560px) {
-
 }
 @media (min-width: 650px) {
   .menu {
@@ -113,45 +115,29 @@ nav {
     display: none;
   }
   nav {
-    position: fixed;
-    z-index: 1000;
     padding-bottom: 0;
-    top: 0;
-    left: 0;
-    right: 0;
+  }
+  .screen {
+    width: 80%;
   }
   .nav-cont {
-    width: 80%;
     padding-top: 2rem;
   }
-
 }
 @media (min-width: 850px) {
-  
 }
 @media (min-width: 990px) {
   .fake {
     display: none;
   }
-  nav {
-    position: fixed;
-    z-index: 1000;
-    padding-bottom: 0;
-    top: 0;
-    left: 0;
-    right: 0;
-  }
   .nav-cont {
-    width: 80%;
     padding-top: 2rem;
   }
-
 }
 @media (min-width: 770px) {
-
 }
 @media (min-width: 1150px) {
-  .nav-cont {
+  .screen {
     width: 70%;
   }
 }
