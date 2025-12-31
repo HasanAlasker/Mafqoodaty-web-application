@@ -1,0 +1,163 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: cairo;
+}
+:root {
+  --background: #EBEBEB;
+  --white: #ffffff;
+  --black: #000000;
+  --gray: #8F8F8F;
+  --green: #0BD064;
+}
+html {
+  scroll-behavior: smooth;
+}
+body {
+  background-color: var(--background);
+}
+a {
+  color: var(--black);
+  text-decoration: none;
+  font-size: clamp(1rem, 1.2vw, 1.4rem);
+  transition: all 0.3s ease;
+}
+.active {
+  color: var(--green);
+  font-weight: bold;
+}
+
+/* -------------------------------------- N A V B A R ----------------------------------------- */
+
+nav {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  background-color: rgba(237, 237, 237, 0.7);
+  backdrop-filter: blur(15px) saturate(180%);
+  -webkit-backdrop-filter: blur(15px) saturate(180%);
+  z-index: 1000;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+}
+.nav-cont {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 90%;
+  background-color: transparent;
+  padding-top: 1rem;
+}
+.links {
+  gap: 3rem;
+  display: none;
+}
+.logo {
+    background: var(--green);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 2rem;
+    height: 2rem;
+    position: relative;
+}
+.logo>img{
+    width: 80%;
+    position: absolute;
+    left: 1px;
+}
+.menu {
+  color: var(--white);
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+.fake {
+  color: var(--background);
+  background-color: var(--background);
+
+  display: flex;
+  flex-direction: row;
+  position: relative;
+  z-index: -1000;
+  justify-content: center;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+  background-color: rgba(16, 16, 16, 0.7);
+  backdrop-filter: blur(15px) saturate(180%);
+  -webkit-backdrop-filter: blur(15px) saturate(180%);
+}
+
+/* -------------------------------------- M E D I A   Q U E R E I S ----------------------------------------- */
+
+@media (min-width: 560px) {
+
+}
+@media (min-width: 650px) {
+  .menu {
+    display: none;
+  }
+  .links {
+    display: flex;
+  }
+  .logo {
+    width: 2.5rem;
+    height: 2.5rem;
+  }
+  .fake {
+    display: none;
+  }
+  nav {
+    position: fixed;
+    z-index: 1000;
+    padding-bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  .nav-cont {
+    width: 80%;
+    padding-top: 2rem;
+  }
+
+}
+@media (min-width: 850px) {
+  
+}
+@media (min-width: 990px) {
+  .fake {
+    display: none;
+  }
+  nav {
+    position: fixed;
+    z-index: 1000;
+    padding-bottom: 0;
+    top: 0;
+    left: 0;
+    right: 0;
+  }
+  .nav-cont {
+    width: 80%;
+    padding-top: 2rem;
+  }
+
+}
+@media (min-width: 770px) {
+
+}
+@media (min-width: 1150px) {
+  .nav-cont {
+    width: 70%;
+  }
+}
+@media (min-width: 1350px) {
+  .logo {
+    width: 3rem;
+    height: 3rem;
+  }
+}
