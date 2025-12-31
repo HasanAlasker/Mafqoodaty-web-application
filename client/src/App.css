@@ -23,6 +23,9 @@ a {
   font-size: clamp(1rem, 1.4vw, 1.4rem);
   transition: all 0.3s ease;
 }
+a:hover {
+  transform: translateY(-2px);
+}
 .active {
   color: var(--green);
   font-weight: bold;
@@ -110,7 +113,7 @@ nav {
 .tab {
   display: flex;
   margin: 2rem 0;
-  border-radius: .5rem;
+  border-radius: 0.5rem;
 }
 .tabBtn {
   display: flex;
@@ -120,7 +123,13 @@ nav {
   color: var(--green);
   font-weight: bold;
   font-size: clamp(1rem, 2vw, 1.5rem);
-  padding: .5rem;
+  padding: 0.5rem;
+}
+.tabBtn:hover {
+  filter: drop-shadow(0px 10px 10px rgba(124, 123, 123, 0.581));
+  cursor: pointer;
+  transform: translateY(-3px);
+  transition: all 0.3s ease;
 }
 .activeTab {
   background-color: var(--green);
@@ -128,7 +137,6 @@ nav {
 }
 .nonactiveTab {
   background-color: var(--white);
-
 }
 
 /* -------------------------------------- M E D I A   Q U E R E I S ----------------------------------------- */
@@ -143,6 +151,7 @@ nav {
   overflow: hidden;
   position: relative;
   padding: 1.5rem 1rem;
+  box-shadow: 0px 5px 20px rgba(124, 123, 123, 0.293);
 }
 .rightPart {
   display: none;
