@@ -156,8 +156,8 @@ router.get("/:id", async (req, res) => {
 // verify password
 router.post("/verify/:id", validate(verifyPasswordSchema), async (req, res) => {
   try {
-    const { password } = req.body;
-    const { id } = req.params;
+    const password = req.body.password;
+    const id = req.params.id;
 
     if (!id || !mongoose.Types.ObjectId.isValid(id)) {
       return res.status(400).json({
