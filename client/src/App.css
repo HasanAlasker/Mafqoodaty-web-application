@@ -248,6 +248,7 @@ nav {
   aspect-ratio: 1;
   border: none;
   background: var(--gray);
+  outline: none;
 }
 .priBtn {
   width: 100%;
@@ -264,6 +265,70 @@ nav {
   cursor: pointer;
   transform: translateY(-3px);
   transition: all 0.3s ease;
+}
+
+/* -------------------------------------- F O R M ----------------------------------------- */
+
+form{
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.formInput {
+  display: flex;
+  flex-direction: column;
+}
+.formInput input {
+  padding: 5px 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
+  transition: all 0.3s ease;
+  outline: none;
+}
+.formInput select {
+  padding: 5px 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
+  transition: all 0.3s ease;
+  outline: none;
+}
+.formInput textarea {
+  padding: 5px 10px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: clamp(0.875rem, 1.5vw, 1rem);
+  transition: all 0.3s ease;
+  outline: none;
+  resize: none;
+  width: 100%;
+}
+.error {
+  color: red;
+  font-weight: 600;
+}
+.formInput input:focus {
+  border: var(--green) solid 2px;
+  accent-color: var(--green);
+}
+.formInput select:focus {
+  border: var(--green) solid 2px;
+  accent-color: var(--green);
+}
+.formInput textarea:focus {
+  border: var(--green) solid 2px;
+  accent-color: var(--green);
+}
+.formBtn{
+  width: 100%;
+  border: none;
+  border-radius: 8px;
+  margin: 1rem 0 4rem 0;
+  background: var(--green);
+  color: var(--white);
+  padding: .5rem;
+  font-weight: bold;
 }
 
 /* -------------------------------------- M E D I A   Q U E R E I S ----------------------------------------- */

@@ -85,6 +85,7 @@ const handleSubmit = async (
       console.log("Post created successfully:", result.data);
       resetForm();
       // Navigate to success page or show success message
+      alert("تم النشر بنجاح!")
     } else {
       setErrors({ submit: result.error });
     }
@@ -107,15 +108,26 @@ export default function AddPost() {
         {({ isSubmitting, errors }) => (
           <Form>
             {/* Add your form fields here */}
-            <div>
+            <div className="formInput">
               <label htmlFor="userName">اسم المستخدم</label>
-              <Field type="text" name="userName" id="userName" />
+              <Field
+                type="text"
+                name="userName"
+                id="userName"
+                placeholder="اسم المستخدم"
+              />
               <ErrorMessage name="userName" component="div" className="error" />
             </div>
 
-            <div>
+            <div className="formInput">
               <label htmlFor="userPhone">رقم الهاتف</label>
-              <Field type="tel" name="userPhone" id="userPhone" />
+              <Field
+                type="tel"
+                name="userPhone"
+                id="userPhone"
+                placeholder="رقم الهاتف"
+                style={{ direction: "rtl" }}
+              />
               <ErrorMessage
                 name="userPhone"
                 component="div"
@@ -123,7 +135,7 @@ export default function AddPost() {
               />
             </div>
 
-            <div>
+            <div className="formInput">
               <label htmlFor="type">النوع</label>
               <Field as="select" name="type" id="type">
                 <option value="">اختر النوع</option>
@@ -133,7 +145,7 @@ export default function AddPost() {
               <ErrorMessage name="type" component="div" className="error" />
             </div>
 
-            <div>
+            <div className="formInput">
               <label htmlFor="category">الفئة</label>
               <Field as="select" name="category" id="category">
                 <option value="">اختر الفئة</option>
@@ -149,21 +161,31 @@ export default function AddPost() {
               <ErrorMessage name="category" component="div" className="error" />
             </div>
 
-            <div>
+            <div className="formInput">
               <label htmlFor="name">اسم الشيء</label>
-              <Field type="text" name="name" id="name" />
+              <Field
+                type="text"
+                name="name"
+                id="name"
+                placeholder="اسم الشيء"
+              />
               <ErrorMessage name="name" component="div" className="error" />
             </div>
 
-            <div>
-              <label htmlFor="color">اللون</label>
-              <Field type="text" name="color" id="color" />
+            <div className="formInput">
+              <label htmlFor="color">اللون (اختياري)</label>
+              <Field type="text" name="color" id="color" placeholder="اللون" />
               <ErrorMessage name="color" component="div" className="error" />
             </div>
 
-            <div>
+            <div className="formInput">
               <label htmlFor="description">الوصف</label>
-              <Field as="textarea" name="description" id="description" />
+              <Field
+                as="textarea"
+                name="description"
+                id="description"
+                placeholder="الوصف"
+              />
               <ErrorMessage
                 name="description"
                 component="div"
@@ -171,30 +193,37 @@ export default function AddPost() {
               />
             </div>
 
-            <div>
+            <div className="formInput">
               <label htmlFor="city">المدينة</label>
-              <Field type="text" name="city" id="city" />
+              <Field type="text" name="city" id="city" placeholder="المدينة" />
               <ErrorMessage name="city" component="div" className="error" />
             </div>
 
-            <div>
+            <div className="formInput">
               <label htmlFor="area">المنطقة</label>
-              <Field type="text" name="area" id="area" />
+              <Field type="text" name="area" id="area" placeholder="المنطقة" />
               <ErrorMessage name="area" component="div" className="error" />
             </div>
 
-            <div>
-              <label htmlFor="password">
-                كلمة المرور (للتعديل/الحذف لاحقاً)
-              </label>
-              <Field type="password" name="password" id="password" />
+            <div className="formInput">
+              <label htmlFor="password">كلمة السر (للتعديل/الحذف لاحقاً)</label>
+              <Field
+                type="password"
+                name="password"
+                id="password"
+                placeholder="كلمة السر"
+              />
               <ErrorMessage name="password" component="div" className="error" />
             </div>
 
             {errors.submit && <div className="error">{errors.submit}</div>}
 
-            <button type="submit" disabled={isSubmitting}>
-              {isSubmitting ? "Submitting..." : "Submit Post"}
+            <button
+              className="formBtn mid"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "ينشر الآن..." : "نشر الإعلان"}
             </button>
           </Form>
         )}
