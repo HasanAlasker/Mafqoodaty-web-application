@@ -9,6 +9,7 @@ import {
   updatePostSchema,
   verifyPasswordSchema,
 } from "../validation/post.js";
+import deleteImageFromCloudinary from "../utils/cloudinary.js";
 
 const router = express.Router();
 
@@ -305,6 +306,10 @@ router.delete("/:id", validate(verifyPasswordSchema), async (req, res) => {
         success: false,
         message: "Incorrect password",
       });
+    }
+
+    if (post.imagePublicId) {
+      await deleteImageFromCloudinary(post.imagePublicId);
     }
 
     // Delete post

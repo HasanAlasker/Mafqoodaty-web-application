@@ -53,16 +53,24 @@ export function PostProvider({ children }) {
   }, [foundPosts, lostPosts]);
 
   // create post
-  const createPost = async (data) => {};
+  const createPost = async (data) => {
+
+  };
 
   // edit post
-  const editPost = async (id, data) => {};
+  const editPost = async (id, data) => {
+
+  };
 
   // delete post
-  const deletePost = async (id) => {};
+  const deletePost = async (id) => {
+
+  };
 
   // verifyPassword
-  const verifyPassword = async (id, data) => {};
+  const verifyPassword = async (id, data) => {
+    
+  };
 
   const value = {
     found,
