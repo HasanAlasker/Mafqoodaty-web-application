@@ -27,7 +27,7 @@ export default function Post({
 
   return (
     <PostCard>
-      <TopOfPost />
+      <TopOfPost userName={userName} createdAt={createdAt}/>
       <TagContainer>
         <Tags title={name} />
         <Tags title={category} />
@@ -36,7 +36,7 @@ export default function Post({
         {color && <Tags title={color} />}
         <Tags title={type} />
       </TagContainer>
-      <Description open={openDesc} onClick={onClickDesc}/>
+      <Description open={openDesc} onClick={onClickDesc} description={description}/>
       <img className="itemImage"  alt="" />
       <PrimaryBtn />
     </PostCard>

@@ -1,5 +1,6 @@
 import React from "react";
 import { RiMore2Line, RiUserLine } from "@remixicon/react";
+import { formatDate } from "../functions/formatDate";
 
 export default function TopOfPost({ userName, createdAt }) {
   return (
@@ -9,8 +10,8 @@ export default function TopOfPost({ userName, createdAt }) {
           <RiUserLine className="avatarIcon" color="white" size={32}/>
         </div>
         <div className="nameDate">
-          <p className="mid bold">حسن الاسكر</p>
-          <p className="small faded semiBold">1/2/2026</p>
+          <p className="mid bold">{userName}</p>
+          <p className="small faded semiBold">{formatDate(createdAt)}</p>
         </div>
       </div>
       <RiMore2Line size={32} />

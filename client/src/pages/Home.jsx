@@ -8,19 +8,56 @@ import { usePost } from "../context/postContext";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("lost");
-  const {lost} = usePost()
+  const { lost, found, loading } = usePost();
 
   const onTabChange = () => {
     let tab = activeTab === "lost" ? "found" : "lost";
     setActiveTab(tab);
   };
 
+  const foundList = found?.map((post) => (
+    <Post
+      key={post._id}
+      userName={post.userName}
+      userPhone={post.userPhone}
+      createdAt={post.createdAt}
+      area={post.area}
+      city={post.city}
+      name={post.name}
+      category={post.category}
+      color={post?.color}
+      description={post.description}
+      image={post?.image}
+      password={post.password}
+      type={post.type}
+    />
+  ));
+
+  const lostList = lost?.map((post) => (
+    <Post
+      key={post._id}
+      userName={post.userName}
+      userPhone={post.userPhone}
+      createdAt={post.createdAt}
+      area={post.area}
+      city={post.city}
+      name={post.name}
+      category={post.category}
+      color={post?.color}
+      description={post.description}
+      image={post?.image}
+      password={post.password}
+      type={post.type}
+    />
+  ));
+
   return (
     <Screen>
       <Nav />
       <HomeCard />
       <TabNav activeTab={activeTab} onTabChange={onTabChange} />
-      <Post />
+      {foundList}
+      {lostList}
     </Screen>
   );
 }
