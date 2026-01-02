@@ -197,7 +197,7 @@ const removePost = async (id, password, type) => {
   } catch (err) {
     setError(true);
     setErrMsg(err.message || err);
-    return { ok: false, error: err.message }; // Fix: return object, not false
+    return { ok: false, error: err.message };
   } finally {
     setLoading(false);
   }

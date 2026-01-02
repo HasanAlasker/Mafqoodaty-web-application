@@ -112,7 +112,7 @@ export default function Post({
       </div>
       <div className="imageAndBtn">
         {image && <img className="itemImage" alt="" />}
-        <PrimaryBtn />
+        <PrimaryBtn userPhone={userPhone} />
       </div>
     </PostCard>
   );
