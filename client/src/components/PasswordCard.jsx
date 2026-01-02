@@ -10,7 +10,13 @@ const validationSchema = Yup.object({
     .required("كلمة المرور مطلوبة"),
 });
 
-export default function PasswordCard({ id, setPassword, onChecked }) {
+export default function PasswordCard({
+  id,
+  setPassword,
+  setChecking,
+  setEditing,
+  onChecked,
+}) {
   const handleSubmit = async (
     values,
     { setSubmitting, resetForm, setErrors }
@@ -20,11 +26,12 @@ export default function PasswordCard({ id, setPassword, onChecked }) {
 
       if (result?.ok) {
         setPassword(values.password);
+        setChecking(false);
+        setEditing(true)
         resetForm();
-        alert("تم التحقق بنجاح!");
       } else {
         setErrors({
-          submit: result?.error || "كلمة السر غير صحيحة",
+          submit: "كلمة السر غير صحيحة",
         });
       }
     } catch (error) {

@@ -85,12 +85,21 @@ export default function Post({
   };
 
   const onEdit = () => {
+    setMenu(false)
     setChecking(true);
   };
 
   const handleDelete = () => {};
 
-  if (isChecking) return <PasswordCard id={id} setPassword={setPasswordChecked}/>;
+  if (isChecking)
+    return (
+      <PasswordCard
+        id={id}
+        setPassword={setPasswordChecked}
+        setChecking={setChecking}
+        setEditing={setEditing}
+      />
+    );
 
   if (isEditing) return <></>;
 
