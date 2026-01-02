@@ -35,7 +35,7 @@ a:hover {
   margin: 0 auto;
   display: flex;
   flex-direction: column;
-  gap: 5vw;
+  gap: 12vw;
 }
 h1 {
   font-size: clamp(2.1rem, 5vw, 8rem);
@@ -434,6 +434,7 @@ form {
   }
   .screen {
     width: 80%;
+    gap: 7vw;
   }
   .nav-cont {
     padding-top: 2rem;
@@ -457,6 +458,7 @@ form {
 @media (min-width: 1150px) {
   .screen {
     width: 70%;
+    gap: 5vw;
   }
 }
 @media (min-width: 1350px) {

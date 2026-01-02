@@ -97,18 +97,20 @@ export default function Post({
           onDelete={handleDelete}
         />
         <TagContainer>
-          <Tags title={name} />
+          <Tags title={type} green />
           <Tags title={category} />
+          <Tags title={name} />
+          {color && <Tags title={color} />}
           <Tags title={city} />
           <Tags title={area} />
-          {color && <Tags title={color} />}
-          <Tags title={type} green />
         </TagContainer>
-        <Description
-          open={openDesc}
-          onClick={onClickDesc}
-          description={description}
-        />
+        {description && (
+          <Description
+            open={openDesc}
+            onClick={onClickDesc}
+            description={description}
+          />
+        )}
       </div>
       <div className="imageAndBtn">
         {image && <img className="itemImage" alt="" />}

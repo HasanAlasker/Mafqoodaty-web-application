@@ -32,8 +32,7 @@ export const createPostSchema = Joi.object({
 
   // image: Joi.string().required(),
 
-  description: Joi.string().max(500).trim().required().messages({
-    "string.empty": "Description is required",
+  description: Joi.string().max(500).trim().allow("").messages({
     "string.max": "Description cannot exceed 500 characters",
   }),
 
@@ -83,7 +82,7 @@ export const updatePostSchema = Joi.object({
     .max(20)
     .trim(),
   name: Joi.string().max(100).trim(),
-  description: Joi.string().max(500).trim(),
+  description: Joi.string().max(500).trim().allow(""),
   city: Joi.string().trim(),
   area: Joi.string().trim(),
   color: Joi.string().trim().allow(""),

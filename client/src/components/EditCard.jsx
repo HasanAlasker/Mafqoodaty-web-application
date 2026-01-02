@@ -20,8 +20,7 @@ const validationSchema = Yup.object({
 
   description: Yup.string()
     .max(500, "الوصف يجب ألا يزيد عن 500 حرف")
-    .required("الوصف مطلوب")
-    .trim(),
+    .trim().notRequired(),
 
   city: Yup.string().required("المدينة مطلوبة").trim(),
 
@@ -123,7 +122,7 @@ export default function EditCard({
             </div>
 
             <div className="formInput">
-              <label htmlFor="description">الوصف</label>
+              <label htmlFor="description">الوصف (اختياري)</label>
               <Field
                 as="textarea"
                 name="description"
