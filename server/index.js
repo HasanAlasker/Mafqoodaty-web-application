@@ -20,14 +20,14 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? "render link" // add the server link here when you publish it
+        ? "https://mafqoodaty.netlify.app/" // add the front link here when you publish it
         : "http://localhost:5173",
   })
 );
 
 app.use(globalLimit);
 
-app.use("/api/posts", posts)
+app.use("/api/posts", posts);
 
 mongoose
   .connect(process.env.DATABASE_URL)
