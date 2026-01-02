@@ -20,7 +20,7 @@ app.use(
   cors({
     origin:
       process.env.NODE_ENV === "production"
-        ? "https://mafqoodaty.netlify.app/" // add the front link here when you publish it
+        ? "https://mafqoodaty.netlify.app" // add the front link here when you publish it
         : "http://localhost:5173",
   })
 );
