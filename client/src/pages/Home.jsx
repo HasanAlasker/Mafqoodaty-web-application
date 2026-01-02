@@ -6,6 +6,7 @@ import TabNav from "../components/TabNav";
 import Post from "../components/Post";
 import { usePost } from "../context/postContext";
 import PostGrid from "../components/PostGrid";
+import LoadingPost from "../components/LoadingPost";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("lost");
@@ -59,6 +60,16 @@ export default function Home() {
       <Nav />
       <HomeCard />
       <TabNav activeTab={activeTab} onTabChange={onTabChange} />
+      {(loading || !found || !lost) && (
+        <PostGrid>
+          <LoadingPost />
+          <LoadingPost />
+          <LoadingPost />
+          <LoadingPost />
+          <LoadingPost />
+          <LoadingPost />
+        </PostGrid>
+      )}
       <PostGrid>{activeTab === "found" ? foundList : lostList}</PostGrid>
     </Screen>
   );
