@@ -6,6 +6,7 @@ import {
   editPost,
   getAllFound,
   getAllLost,
+  wakeup,
 } from "../api/posts";
 
 export const PostContext = createContext();
@@ -25,6 +26,7 @@ export function PostProvider({ children }) {
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState(null);
   const [status, setStatus] = useState(null);
+  const [isConnected, setConnected] = useState(false);
 
   const {
     data: foundPosts,
@@ -39,6 +41,41 @@ export function PostProvider({ children }) {
     loading: fetchingLost,
     error: errLost,
   } = useApi(getAllLost);
+
+  const {
+    data: awake,
+    request: wakeServer,
+    loading: wakingUp,
+    error: sleeping,
+  } = useApi(wakeup);
+
+  useEffect(() => {
+    const checkConnection = async () => {
+      setError(false);
+      setErrMsg(null);
+      setLoading(true);
+
+      try {
+        const response = await wakeServer();
+
+        if (response?.ok) {
+          setConnected(true);
+        } else {
+          setConnected(false);
+          setError(true);
+          setErrMsg(response?.error || "فشل الاتصال بالخادم");
+        }
+      } catch (error) {
+        setErrMsg(error.message || "خطأ في الاتصال");
+        setConnected(false);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    checkConnection();
+  }, []);
 
   useEffect(() => {
     try {
@@ -57,8 +94,6 @@ export function PostProvider({ children }) {
     setFound(foundPosts.data);
     setLost(lostPosts.data);
   }, [foundPosts, lostPosts]);
-
-  // check if server is connected (add a new route tommorow)
 
   // create post
   const addPost = async (data) => {
@@ -181,6 +216,7 @@ export function PostProvider({ children }) {
     updatePost,
     removePost,
     verifyPassword,
+    isConnected,
   };
 
   return <PostContext.Provider value={value}>{children}</PostContext.Provider>;

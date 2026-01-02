@@ -2,6 +2,19 @@ import api from "./axios";
 
 const endPoint = "/api/posts";
 
+export const wakeup = async () => {
+  try {
+    const res = await api.get(`${endPoint}/wakeup`);
+    return { ok: true, data: res.data, status: res.status };
+  } catch (error) {
+    return {
+      ok: false,
+      error: error.response?.data?.message || error.message,
+      status: error.response?.status
+    };
+  }
+};
+
 export const getAllPosts = async () => {
   try {
     const res = await api.get(`${endPoint}/`);

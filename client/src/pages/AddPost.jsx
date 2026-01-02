@@ -75,7 +75,7 @@ const initialValues = {
 };
 
 export default function AddPost() {
-  const { addPost, errMsg, status, error, loading } = usePost();
+  const { addPost, errMsg, status, error, loading, isConnected } = usePost();
 
   const handleSubmit = async (
     values,
@@ -252,10 +252,13 @@ export default function AddPost() {
             <button
               className="formBtn mid"
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || !isConnected}
             >
-              {/* {loading && "جاري التحميل..."} */}
-              {isSubmitting ? "ينشر الآن..." : "نشر الإعلان"}
+              {!isConnected
+                ? "جاري التحميل..."
+                : isSubmitting
+                ? "ينشر الآن..."
+                : "نشر الإعلان"}
             </button>
           </Form>
         )}

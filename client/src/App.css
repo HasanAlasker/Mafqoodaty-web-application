@@ -336,6 +336,12 @@ form {
   transform: translateY(-3px);
   transition: all 0.3s ease;
 }
+.formBtn:disabled{
+  opacity: .5;
+  cursor: not-allowed;
+  transform: none;
+  filter: none;
+}
 
 /* -------------------------------------- M E D I A   Q U E R E I S ----------------------------------------- */
 
