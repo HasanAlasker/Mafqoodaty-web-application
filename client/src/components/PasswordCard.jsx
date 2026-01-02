@@ -2,6 +2,7 @@ import React from "react";
 import PostCard from "./PostCard";
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
+import { verifyPassword } from "../api/posts";
 
 const validationSchema = Yup.object({
   password: Yup.string()
@@ -9,31 +10,39 @@ const validationSchema = Yup.object({
     .required("كلمة المرور مطلوبة"),
 });
 
-export default function PasswordCard() {
-
+export default function PasswordCard({ id, setPassword, onChecked }) {
   const handleSubmit = async (
     values,
     { setSubmitting, resetForm, setErrors }
   ) => {
     try {
-      const result = await addPost(values);
+      const result = await verifyPassword(id, values);
 
-      if (result) {
+      if (result?.ok) {
+        setPassword(values.password);
         resetForm();
-        alert("تم النشر بنجاح!");
+        alert("تم التحقق بنجاح!");
       } else {
-        setErrors({ submit: errMsg });
+        setErrors({
+          submit: result?.error || "كلمة السر غير صحيحة",
+        });
       }
     } catch (error) {
-      setErrors({ submit: "An unexpected error occurred" });
+      setErrors({
+        submit: error.message || "حدث خطأ غير متوقع",
+      });
     } finally {
       setSubmitting(false);
     }
   };
 
   return (
-    <PostCard style={{padding:"1rem"}}>
-      <Formik validationSchema={validationSchema} onSubmit={handleSubmit}>
+    <PostCard style={{ padding: "1rem" }}>
+      <Formik
+        initialValues={{ password: "" }}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
         {({ isSubmitting, errors }) => (
           <Form>
             <div className="formInput">
@@ -53,9 +62,9 @@ export default function PasswordCard() {
               className="formBtn small"
               type="submit"
               disabled={isSubmitting}
-              style={{marginBottom: "1rem"}}
+              style={{ marginBottom: "1rem" }}
             >
-              {isSubmitting ? "تحقق..." : "تحقق"}
+              {isSubmitting ? "جاري التحقق..." : "تحقق"}
             </button>
           </Form>
         )}

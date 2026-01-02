@@ -19,7 +19,7 @@ export default function Home() {
   const foundList = found?.map((post) => (
     <Post
       key={post._id}
-      _id={post._id}
+      id={post._id}
       userName={post.userName}
       userPhone={post.userPhone}
       createdAt={post.createdAt}
@@ -38,7 +38,7 @@ export default function Home() {
   const lostList = lost?.map((post) => (
     <Post
       key={post._id}
-      _id={post._id}
+      id={post._id}
       userName={post.userName}
       userPhone={post.userPhone}
       createdAt={post.createdAt}

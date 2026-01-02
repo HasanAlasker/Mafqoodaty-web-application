@@ -44,7 +44,7 @@ const validationSchema = Yup.object({
 });
 
 export default function Post({
-  _id,
+  id,
   userName,
   userPhone,
   createdAt,
@@ -90,27 +90,7 @@ export default function Post({
 
   const handleDelete = () => {};
 
-  const handleSubmit = async (
-    values,
-    { setSubmitting, resetForm, setErrors }
-  ) => {
-    try {
-      const result = await addPost(values);
-
-      if (result) {
-        resetForm();
-        alert("تم النشر بنجاح!");
-      } else {
-        setErrors({ submit: errMsg });
-      }
-    } catch (error) {
-      setErrors({ submit: "An unexpected error occurred" });
-    } finally {
-      setSubmitting(false);
-    }
-  };
-
-  if (isChecking) return <PasswordCard />;
+  if (isChecking) return <PasswordCard id={id} setPassword={setPasswordChecked}/>;
 
   if (isEditing) return <></>;
 
