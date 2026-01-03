@@ -48,7 +48,7 @@ const Footer = () => {
               </p>
               <div className="social-links">
                 <a
-                  href="https://www.instagram.com/artebella.jo/?hl=en"
+                  href="https://www.instagram.com/mafqoodaty/?hl=en"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="social-icon"
@@ -59,7 +59,7 @@ const Footer = () => {
                   </svg>
                 </a>
                 <a
-                  href="https://www.facebook.com/profile.php?id=100091281469122"
+                  href="www.facebook.com/groups/4088775764770084/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="social-icon"
@@ -67,6 +67,17 @@ const Footer = () => {
                 >
                   <svg viewBox="0 0 24 24" fill="currentColor">
                     <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                  </svg>
+                </a>
+                <a
+                  href="mailto:mafqoodaty.jo@gmail.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="social-icon"
+                  aria-label="Email"
+                >
+                  <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M1.5 6.75c0-1.24 1.01-2.25 2.25-2.25h16.5c1.24 0 2.25 1.01 2.25 2.25v10.5c0 1.24-1.01 2.25-2.25 2.25H3.75c-1.24 0-2.25-1.01-2.25-2.25V6.75zm2.25-.75a.75.75 0 0 0-.75.75v.37l9 5.63 9-5.63v-.37a.75.75 0 0 0-.75-.75H3.75zm17.25 3.03-8.6 5.38a.75.75 0 0 1-.8 0L3 9.03v8.22c0 .41.34.75.75.75h16.5c.41 0 .75-.34.75-.75V9.03z" />
                   </svg>
                 </a>
               </div>
