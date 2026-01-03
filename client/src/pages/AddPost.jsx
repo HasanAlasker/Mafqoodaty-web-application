@@ -5,6 +5,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { usePost } from "../context/postContext";
 import ImagePrev from "../components/ImagePrev";
+import Footer from "../components/Footer";
 
 const validationSchema = Yup.object({
   userName: Yup.string()
@@ -352,6 +353,7 @@ export default function AddPost() {
           </Form>
         )}
       </Formik>
+      <Footer />
     </Screen>
   );
 }
