@@ -9,7 +9,11 @@ import {
   updatePostSchema,
   verifyPasswordSchema,
 } from "../validation/post.js";
-import deleteImageFromCloudinary from "../utils/cloudinary.js";
+import {
+  deleteImageFromCloudinary,
+  upload,
+  uploadToCloudinary,
+} from "../config/cloudinary.js";
 
 const router = express.Router();
 
@@ -205,30 +209,55 @@ router.post("/verify/:id", validate(verifyPasswordSchema), async (req, res) => {
 });
 
 // create post
-router.post("/", validate(createPostSchema), async (req, res) => {
-  try {
-    const data = req.body;
+router.post(
+  "/",
+  upload.single("image"),
+  validate(createPostSchema),
+  async (req, res) => {
+    let uploadedImage = null;
 
-    const newPost = new PostModel(data);
-    newPost.password = await newPost.hashPassword(data.password);
+    try {
+      const data = req.body;
 
-    await newPost.save();
+      const postData = {
+        ...data,
+      };
 
-    const response = _.omit(newPost.toObject(), ["password", "imagePublicId"]);
+      if (req.file) {
+        uploadedImage = await uploadToCloudinary(req.file.buffer);
+        postData.image = uploadedImage.secure_url;
+        postData.imagePublicId = uploadedImage.public_id;
+      }
 
-    return res.status(201).json({
-      success: true,
-      message: "Post created successfully",
-      data: response,
-    });
-  } catch (err) {
-    console.log(err);
-    return res.status(500).json({
-      success: false,
-      message: "Server Error",
-    });
+      const newPost = new PostModel(postData);
+      newPost.password = await newPost.hashPassword(data.password);
+
+      await newPost.save();
+
+      const response = _.omit(newPost.toObject(), [
+        "password",
+        "imagePublicId",
+      ]);
+
+      return res.status(201).json({
+        success: true,
+        message: "Post created successfully",
+        data: response,
+      });
+    } catch (err) {
+      // If post creation fails and image was uploaded, delete it from Cloudinary
+      if (uploadedImage && uploadedImage.public_id) {
+        await deleteImageFromCloudinary(uploadedImage.public_id);
+      }
+
+      console.log(err);
+      return res.status(500).json({
+        success: false,
+        message: "Server Error",
+      });
+    }
   }
-});
+);
 
 // edit post
 router.put("/:id", validate(updatePostSchema), async (req, res) => {

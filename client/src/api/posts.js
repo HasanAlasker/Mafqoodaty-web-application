@@ -82,7 +82,11 @@ export const verifyPassword = async (id, data) => {
 
 export const createPost = async (data) => {
   try {
-    const res = await api.post(`${endPoint}/`, data);
+    const res = await api.post(`${endPoint}/`, data, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    });
     return { ok: true, data: res.data, status: res.status };
   } catch (error) {
     return {

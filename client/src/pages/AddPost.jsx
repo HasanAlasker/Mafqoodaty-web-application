@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import Nav from "../components/Nav";
 import Screen from "../components/Screen";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 import { usePost } from "../context/postContext";
+import ImagePrev from "../components/ImagePrev";
 
 const validationSchema = Yup.object({
   userName: Yup.string()
@@ -52,7 +53,8 @@ const validationSchema = Yup.object({
 
   description: Yup.string()
     .max(500, "الوصف يجب ألا يزيد عن 500 حرف")
-    .trim().notRequired(),
+    .trim()
+    .notRequired(),
 
   city: Yup.string().required("المدينة مطلوبة").trim(),
 
@@ -67,7 +69,7 @@ const initialValues = {
   category: "",
   color: "",
   password: "",
-  // image: null,
+  image: "",
   description: "",
   city: "",
   area: "",
@@ -75,22 +77,76 @@ const initialValues = {
 
 export default function AddPost() {
   const { addPost, errMsg, status, error, loading, isConnected } = usePost();
+  const fileInputRef = useRef(null);
+  const [imagePreview, setImagePreview] = useState(null);
+  const [selectedFileName, setSelectedFileName] = useState("");
+
+  const handleImageChange = (event, setFieldValue) => {
+    const file = event.target.files[0];
+
+    if (file) {
+      // Validate file type
+      if (!file.type.startsWith("image/")) {
+        alert("يرجى اختيار صورة صالحة");
+        return;
+      }
+
+      // Validate file size (e.g., max 5MB)
+      const maxSize = 5 * 1024 * 1024; // 5MB
+      if (file.size > maxSize) {
+        alert("حجم الصورة يجب أن يكون أقل من 5 ميجابايت");
+        return;
+      }
+
+      // Set the file in Formik
+      setFieldValue("image", file);
+      setSelectedFileName(file.name);
+
+      // Create preview
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const removeImage = (setFieldValue) => {
+    setFieldValue("image", null);
+    setImagePreview(null);
+    setSelectedFileName("");
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
 
   const handleSubmit = async (
     values,
     { setSubmitting, resetForm, setErrors }
   ) => {
     try {
-      const result = await addPost(values);
+      // Create FormData for file upload
+      const formData = new FormData();
+
+      // Append all form fields
+      Object.keys(values).forEach((key) => {
+        if (values[key] !== null && values[key] !== "") {
+          formData.append(key, values[key]);
+        }
+      });
+
+      const result = await addPost(formData);
 
       if (result) {
         resetForm();
+        setImagePreview(null);
+        setSelectedFileName("");
         alert("تم النشر بنجاح!");
       } else {
         setErrors({ submit: errMsg });
       }
     } catch (error) {
-      setErrors({ submit: "An unexpected error occurred" });
+      setErrors({ submit: "حدث خطأ غير متوقع" });
     } finally {
       setSubmitting(false);
     }
@@ -104,7 +160,7 @@ export default function AddPost() {
         validationSchema={validationSchema}
         onSubmit={handleSubmit}
       >
-        {({ isSubmitting, errors }) => (
+        {({ isSubmitting, errors, setFieldValue }) => (
           <Form>
             <div className="topForm">
               <div className="rightForm">
@@ -244,6 +300,40 @@ export default function AddPost() {
                 placeholder="كلمة السر"
               />
               <ErrorMessage name="password" component="div" className="error" />
+            </div>
+
+            <div className="formInput">
+              <label>الصورة (اختياري)</label>
+
+              <input
+                type="file"
+                accept="image/*"
+                hidden
+                ref={fileInputRef}
+                onChange={(e) => handleImageChange(e, setFieldValue)}
+              />
+
+              <button
+                className="formBtn small"
+                type="button"
+                disabled={isSubmitting || !isConnected}
+                style={{
+                  margin: 0,
+                  background: "white",
+                  color: "#0bd064",
+                  border: "#0bd064 solid 2px",
+                }}
+                onClick={() => fileInputRef.current?.click()}
+              >
+                {selectedFileName || "اختيار صورة"}
+              </button>
+
+              {imagePreview && (
+                <ImagePrev
+                  imageSrc={imagePreview}
+                  onRemove={() => removeImage(setFieldValue)}
+                />
+              )}
             </div>
 
             {errors.submit && <div className="error">{errors.submit}</div>}
