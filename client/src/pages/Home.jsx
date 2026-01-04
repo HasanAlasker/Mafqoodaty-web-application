@@ -8,6 +8,7 @@ import { usePost } from "../context/postContext";
 import PostGrid from "../components/PostGrid";
 import LoadingPost from "../components/LoadingPost";
 import Footer from "../components/Footer";
+import LoadingPostGrid from "../components/LoadingPostGrid";
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("lost");
@@ -61,16 +62,7 @@ export default function Home() {
       <Nav />
       <HomeCard />
       <TabNav activeTab={activeTab} onTabChange={onTabChange} />
-      {(loading || !found || !lost) && (
-        <PostGrid>
-          <LoadingPost />
-          <LoadingPost />
-          <LoadingPost />
-          <LoadingPost />
-          <LoadingPost />
-          <LoadingPost />
-        </PostGrid>
-      )}
+      {(loading || !found || !lost) && <LoadingPostGrid />}
       <PostGrid>{activeTab === "found" ? foundList : lostList}</PostGrid>
       <Footer />
     </Screen>

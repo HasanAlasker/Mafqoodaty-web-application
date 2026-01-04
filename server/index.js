@@ -32,7 +32,7 @@ app.use("/api/posts", posts);
 mongoose
   .connect(process.env.DATABASE_URL)
   .then(() => console.log("Connected to mongoDB... ✅"))
-  .catch(() => console.log("Error connecting to mongoDB... ❌", err.message));
+  .catch((err) => console.log("Error connecting to mongoDB... ❌", err.message));
 
 app.listen(port, () => {
   console.log(`Server running on port ${port} 🌍`);
