@@ -59,7 +59,7 @@ const Footer = () => {
                   </svg>
                 </a>
                 <a
-                  href="www.facebook.com/groups/4088775764770084/"
+                  href="https://www.facebook.com/groups/4088775764770084"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="social-icon"
