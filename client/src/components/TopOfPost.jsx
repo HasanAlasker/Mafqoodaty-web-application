@@ -19,7 +19,7 @@ export default function TopOfPost({
           <p className="small faded semiBold">{formatDate(createdAt)}</p>
         </div>
       </div>
-      <RiMore2Line size={32} onClick={onClickMenu} />
+      <RiMore2Line size={32} className="more" onClick={onClickMenu} />
     </div>
   );
 }

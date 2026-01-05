@@ -186,7 +186,7 @@ nav {
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   flex: 1;
-  padding: .5rem;
+  padding: 0.5rem;
 }
 .searchbox:focus {
   outline: none;
@@ -197,7 +197,7 @@ nav {
   border-radius: 10px;
   border-top-right-radius: 0;
   border-bottom-right-radius: 0;
-  padding: .4rem 1rem;
+  padding: 0.4rem 1rem;
   background: var(--green);
   color: var(--white);
   border: none;
@@ -244,7 +244,22 @@ nav {
   overflow: hidden;
   justify-content: space-between;
   position: relative;
-  max-width: 500px;
+
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.06);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+}
+.postCard:hover {
+  transform: translateY(-8px);
+}
+.postCard:hover img {
+  transform: scale(1.02);
+}
+.desc {
+  cursor: pointer;
+}
+.more {
+  cursor: pointer;
 }
 .padding {
   padding: 0 1rem;
@@ -303,6 +318,7 @@ nav {
   border: none;
   background: var(--gray);
   outline: none;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .priBtn {
   width: 100%;
@@ -924,8 +940,8 @@ input {
 }
 @media (min-width: 850px) {
   .searchBtn {
-  padding: .4rem 4rem;
-}
+    padding: 0.4rem 4rem;
+  }
 }
 @media (min-width: 990px) {
   .fake {
