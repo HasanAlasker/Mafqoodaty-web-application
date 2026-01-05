@@ -1,6 +1,7 @@
 import Logo3 from "../assets/logoText.png";
 import Logo2 from "/icon.png";
 import React, { useState } from "react";
+import { RiCloseLine } from "@remixicon/react";
 
 const Footer = () => {
   const [email, setEmail] = useState("");
@@ -147,7 +148,7 @@ const Footer = () => {
               onClick={() => setShowPrivacy(false)}
               aria-label="إغلاق"
             >
-              ×
+              <RiCloseLine />
             </button>
             <h2>سياسة الخصوصية وشروط الاستخدام</h2>
             <div className="modal-body">

@@ -182,6 +182,7 @@ nav {
 }
 .searchbox {
   font-size: clamp(1rem, 2vw, 1.5rem);
+  border-color: var(--white);
   border-top-left-radius: 0;
   border-bottom-left-radius: 0;
   flex: 1;
@@ -740,10 +741,10 @@ input {
   background: var(--background);
   border: none;
   font-size: 28px;
-  cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   color: var(--black);
   transition: all 0.3s ease;
   font-family: "Inter", sans-serif;
